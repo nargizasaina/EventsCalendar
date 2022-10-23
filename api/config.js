@@ -7,5 +7,9 @@ module.exports = {
     mongo: {
         db: 'mongodb://localhost/eventsCalendarApp',
         options: {useNewUrlParser: true}
-    }
+    },
+    facebook: {
+        appId: '1173344116866876',
+        appSecret: process.env.FACEBOOK_APP_SECRET,
+    },
 };

@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
-import bcrypt from "bcrypt";
-import {nanoid} from "nanoid";
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const {nanoid} = require("nanoid");
 const SALT_WORK_FACTOR = 10;
 
 const Schema = mongoose.Schema;
@@ -27,6 +27,10 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
+    displayName: {
+        type: String,
+        required: true
+    }
 });
 
 UserSchema.pre('save', async function(next) {

@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 const AnonymousMenu = () => {
     return (
         <>
-            <Button component={Link} to="/registration" color="inherit">
+            <Button component={Link} to="/register" color="inherit">
                 Sign Up
             </Button>
             <Button component={Link} to="/login" color="inherit">

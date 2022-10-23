@@ -3,20 +3,10 @@ import {Box, Button, Menu} from "@mui/material";
 import {Link} from "react-router-dom";
 import MenuItem from '@mui/material/MenuItem';
 import {useDispatch} from "react-redux";
-import Avatar from '@mui/material/Avatar';
-import { deepPurple } from '@mui/material/colors';
-import {logoutUser} from "../../../../store/actions/usersActions";
-import {apiUrl} from "../../../../config";
+import {logoutRequest} from "../../../../store/actions/usersActions";
 
 const UserMenu = ({user}) => {
     const dispatch = useDispatch();
-
-    let avatar;
-    if (user.avatarImage && user.facebookId) {
-        avatar = user.avatarImage;
-    } else {
-        avatar = apiUrl + '/' + user.avatarImage;
-    }
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -31,12 +21,12 @@ const UserMenu = ({user}) => {
 
     return (
         <Box display="flex" justifyContent="space-between" alignItems="center" paddingTop={1}>
-            {user.role === 'user' &&
+
                 <Button component={Link} to="/track_history" color="inherit"
                         sx={{marginRight: '20px', '&:hover': {color: 'blue'}}}>
                     Track History
                 </Button>
-            }
+
             <Box
                 sx={{
                     display: 'flex',
@@ -54,10 +44,6 @@ const UserMenu = ({user}) => {
                 >
                     Hello, {user.displayName}!
                 </Button>
-                <Avatar
-                    alt={user.displayName.toUpperCase()}
-                    src={avatar}
-                    sx={{marginLeft: '5px', marginBottom: '5px', bgcolor: deepPurple[500]}}/>
             </Box>
 
             <Menu
@@ -72,7 +58,7 @@ const UserMenu = ({user}) => {
                 <MenuItem onClick={handleClose} component={Link} to="/artists/new" color="inherit">Add Artist</MenuItem>
                 <MenuItem onClick={handleClose} component={Link} to="/albums/new" color="inherit">Add Album</MenuItem>
                 <MenuItem onClick={handleClose} component={Link} to="/tracks/new" color="inherit">Add Track</MenuItem>
-                <MenuItem onClick={() => dispatch(logoutUser())}>Logout</MenuItem>
+                <MenuItem onClick={() => dispatch(logoutRequest())}>Logout</MenuItem>
             </Menu>
         </Box>
     );

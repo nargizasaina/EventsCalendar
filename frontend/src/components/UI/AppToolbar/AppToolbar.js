@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import UserMenu from "./Menu/UserMenu";
 import AnonymousMenu from "./Menu/AnonymousMenu";
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles() (() => ({
     appBar: {
         background: '#110e52'
     },
@@ -34,7 +34,7 @@ const AppToolbar = () => {
                         <Grid item>
                             <Typography variant="h6">
                                 <Link to="/" className={classes.mainLink}>
-                                    Your Music Application
+                                    The Events Calendar
                                 </Link>
                             </Typography>
                         </Grid>
