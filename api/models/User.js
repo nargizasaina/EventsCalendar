@@ -30,7 +30,11 @@ const UserSchema = new Schema({
     displayName: {
         type: String,
         required: true
-    }
+    },
+    friends: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 });
 
 UserSchema.pre('save', async function(next) {
