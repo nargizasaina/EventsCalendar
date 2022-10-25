@@ -3,24 +3,25 @@ const router = express.Router();
 const Event = require('../models/Event');
 const auth = require("../middleware/auth");
 const mongoose = require("mongoose");
+const User = require("../models/User");
 
 router.get('/', auth, async (req, res) => {
-    const sort = {datetime: 1};
+    const sort = {date: -1};
     try{
-        if (req.query.owner) {
+        if (req.query.events) {
+            const users = await User.find({friends: req.user._id});
             const events = await Event
-                .find({owner: req.query.owner})
+                .find({owner: {$in: users}})
                 .sort(sort)
-                .populate('owner', 'email displayName');
-            res.send(events);
-        } else {
-            const events = await Event
-                .find({owner: req.user._id})
-                .sort(sort)
-                .populate('owner', 'email displayName');
-            res.send(events);
-        }
-
+                .populate('owner');
+                res.send(events);
+            } else {
+                const events = await Event
+                    .find({owner: req.user._id})
+                    .sort(sort)
+                    .populate('owner');
+                res.send(events);
+            }
     } catch {
         res.sendStatus(500);
     }
@@ -54,11 +55,7 @@ router.delete('/:id', auth, async (req, res) => {
             owner: req.user._id,
             _id: id
         });
-        // const event = await Event.findById(req.params.id);
-        // await Event.findByIdAndDelete(req.params.id) ;
-        // if (event.owner._id !== req.user._id) {
-        //     return res.status(401).send({message: 'Wrong user id'});
-        // }
+
         if (!event) {
             return res.status(404).send({error: 'Task is not found!'});
         }

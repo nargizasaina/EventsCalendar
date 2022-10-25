@@ -101,7 +101,6 @@ router.post('/friends/new', auth, async(req, res) => {
 
         req.user.friends.push(friend._id);
         await req.user.save({validateBeforeSave: false});
-        console.log(req.user.friends);
         return res.send(req.user);
     } catch (e) {
         res.sendStatus(500);

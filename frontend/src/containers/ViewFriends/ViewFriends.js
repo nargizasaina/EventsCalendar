@@ -40,7 +40,8 @@ const ViewFriends = () => {
                         </Box>
                         <Button type="button" onClick={() => onDelete(friend._id)} color="error">Delete</Button>
                     </Box>
-            )) : <h3> There are no friends</h3>
+                ))
+                : <h3> There are no friends</h3>
             }
         </Box>
     );

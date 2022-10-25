@@ -8,7 +8,8 @@ const EventSchema = new Schema({
     },
     date: {
         required: true,
-        type: String
+        type: Date,
+        min: new Date(),
     },
     duration: {
         required: true,

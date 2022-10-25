@@ -1,8 +1,15 @@
 import {put, takeEvery} from 'redux-saga/effects';
 import axiosApi from "../../axiosApi";
 import {
-    createEventFailure, createEventRequest,
-    createEventSuccess, deleteEventFailure, deleteEventRequest, deleteEventSuccess,
+    createEventFailure,
+    createEventRequest,
+    createEventSuccess,
+    deleteEventFailure,
+    deleteEventRequest,
+    deleteEventSuccess,
+    fetchAllEventsFailure,
+    fetchAllEventsRequest,
+    fetchAllEventsSuccess,
     fetchMyEventsFailure,
     fetchMyEventsRequest,
     fetchMyEventsSuccess
@@ -16,6 +23,16 @@ export function* fetchMyEvents() {
         yield put(fetchMyEventsSuccess(response.data));
     }catch (e) {
         yield put(fetchMyEventsFailure(e.response.data));
+        yield put(addNotification('Fetch events failed!', 'error'));
+    }
+}
+
+export function* fetchAllEvents() {
+    try{
+        const response = yield axiosApi('/events?events=all');
+        yield put(fetchAllEventsSuccess(response.data));
+    }catch (e) {
+        yield put(fetchAllEventsFailure(e.response.data));
         yield put(addNotification('Fetch events failed!', 'error'));
     }
 }
@@ -43,9 +60,9 @@ export function* deleteEvent({payload: id}) {
 
 const eventsSagas = [
     takeEvery(fetchMyEventsRequest, fetchMyEvents),
+    takeEvery(fetchAllEventsRequest, fetchAllEvents),
     takeEvery(createEventRequest, createEvent),
     takeEvery(deleteEventRequest, deleteEvent),
-
 ];
 
 export default eventsSagas;

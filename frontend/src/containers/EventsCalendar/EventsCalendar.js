@@ -1,15 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {deleteEventRequest, fetchMyEventsRequest} from "../../store/actions/eventsActions";
+import {deleteEventRequest, fetchAllEventsRequest, fetchMyEventsRequest} from "../../store/actions/eventsActions";
 import {Box, Button, Grid, TextField} from "@mui/material";
 import Spinner from "../../components/UI/Spinner/Spinner";
-import MyEvent from "../../components/MyEvent/MyEvent";
 import {Link} from "react-router-dom";
 import {addFriendRequest} from "../../store/actions/usersActions";
+import Event from "../../components/Event/Event";
 
 const EventsCalendar = () => {
     const dispatch = useDispatch();
     const myEvents = useSelector(state => state.events.myEvents);
+    const otherEvents = useSelector(state => state.events.otherEvents);
     const fetchLoading = useSelector(state => state.events.fetchLoading);
     const addError = useSelector(state => state.users.error);
 
@@ -17,6 +18,7 @@ const EventsCalendar = () => {
 
     useEffect(() => {
         dispatch(fetchMyEventsRequest());
+        dispatch(fetchAllEventsRequest());
     }, [dispatch]);
 
     const onDeleteEvent = async id => {
@@ -59,22 +61,38 @@ const EventsCalendar = () => {
                         />
                         <Button type="submit" sx={{marginRight: '7px'}}>Invite friend</Button>
                     </form>
-
             </Grid>
             {fetchLoading
                 ? <Spinner/>
-                : <Grid item margin="15px">
-                    {myEvents.map(event => (
-                        <MyEvent
-                            key={event._id}
-                            id={event._id}
-                            title={event.title}
-                            date={event.date}
-                            duration={event.duration}
-                            onClick={onDeleteEvent}
-                        />
-                    ))}
-                </Grid>
+                : <>
+                    <Grid item margin="15px">
+                        <h2>My Events</h2>
+                        {myEvents.map(event => (
+                            <Event
+                                key={event._id}
+                                id={event._id}
+                                title={event.title}
+                                date={event.date}
+                                duration={event.duration}
+                                onClick={onDeleteEvent}
+                            />
+                        ))}
+                    </Grid>
+                    <Grid item margin="15px">
+                        <h2>Events of my Friends</h2>
+                        {otherEvents.map(event => (
+                            <Event
+                                key={event._id}
+                                id={event._id}
+                                title={event.title}
+                                date={event.date}
+                                duration={event.duration}
+                                email={event.owner.email}
+                                displayName={event.owner.displayName}
+                            />
+                        ))}
+                    </Grid>
+                </>
             }
         </Grid>
     );

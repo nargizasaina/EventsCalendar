@@ -4,6 +4,7 @@ const name = 'events';
 const eventsSlice = createSlice({
     name,
     initialState: {
+        event: null,
         myEvents: [],
         otherEvents: [],
         fetchLoading: false,
@@ -23,6 +24,19 @@ const eventsSlice = createSlice({
             state.fetchLoading = false;
         },
         fetchMyEventsFailure(state, action) {
+            state.fetchLoading = false;
+            state.fetchError = action.payload;
+        },
+
+        fetchAllEventsRequest(state) {
+            state.fetchLoading = true;
+            state.fetchError = null;
+        },
+        fetchAllEventsSuccess(state, action) {
+            state.otherEvents = action.payload;
+            state.fetchLoading = false;
+        },
+        fetchAllEventsFailure(state, action) {
             state.fetchLoading = false;
             state.fetchError = action.payload;
         },
