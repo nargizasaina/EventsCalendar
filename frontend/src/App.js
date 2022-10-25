@@ -6,6 +6,7 @@ import EventsCalendar from "./containers/EventsCalendar/EventsCalendar";
 import Registration from "./containers/Registration/Registration";
 import Login from "./containers/Login/Login";
 import AddEvent from "./containers/AddEvent/AddEvent";
+import ViewFriends from "./containers/ViewFriends/ViewFriends";
 
 const ProtectedRoute = ({isAllowed, redirectTo, ...props}) => {
     return isAllowed ?
@@ -31,6 +32,12 @@ const App = () => {
                     isAllowed={user}
                     path="/events/new"
                     component={AddEvent}
+                    redirectTo="/login"
+                />
+                <ProtectedRoute
+                    isAllowed={user}
+                    path="/friends"
+                    component={ViewFriends}
                     redirectTo="/login"
                 />
                 <Route render={() => <h1>Not Found</h1>} />

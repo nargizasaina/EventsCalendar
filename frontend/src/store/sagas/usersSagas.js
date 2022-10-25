@@ -1,11 +1,16 @@
 import axiosApi from "../../axiosApi";
 import {put, takeEvery} from "redux-saga/effects";
 import {
-    addFriendFailure, addFriendRequest,
-    addFriendSuccess,
+    addFriendFailure,
+    addFriendRequest,
+    addFriendSuccess, deleteFriendFailure, deleteFriendRequest, deleteFriendSuccess,
     facebookLoginRequest,
+    fetchFriendsFailure,
+    fetchFriendsRequest,
+    fetchFriendsSuccess,
     loginFailure,
-    loginRequest, loginSuccess,
+    loginRequest,
+    loginSuccess,
     logoutRequest,
     registerFailure,
     registerRequest,
@@ -47,6 +52,16 @@ export function* facebookLoginUserSaga({payload: userData}) {
     }
 }
 
+export function* fetchFriends() {
+    try{
+        const response = yield axiosApi('/users/friends');
+        yield put(fetchFriendsSuccess(response.data));
+    } catch (e) {
+        yield put(fetchFriendsFailure(e.response.data));
+        yield put(addNotification('Fetch friends failed!', 'error'));
+    }
+}
+
 export function* addFriend({payload: email}) {
     try{
         yield axiosApi.post('/users/friends/new', {email});
@@ -54,6 +69,17 @@ export function* addFriend({payload: email}) {
         yield put(addNotification('Friend is invited successfully!', 'success'));
     } catch (e) {
         yield put(addFriendFailure(e.response.data));
+    }
+}
+
+export function* deleteFriend({payload: id}) {
+    try{
+        yield axiosApi.delete('/users/friends/' + id);
+        yield put(deleteFriendSuccess());
+        yield put(addNotification('Friend is deleted successfully!', 'success'));
+        yield put(historyPush('/'));
+    }catch (e) {
+        yield put(deleteFriendFailure(e.response.data));
     }
 }
 
@@ -71,7 +97,9 @@ const userSagas = [
     takeEvery(registerRequest, registerUserSaga),
     takeEvery(loginRequest, loginUserSaga),
     takeEvery(facebookLoginRequest, facebookLoginUserSaga),
+    takeEvery(fetchFriendsRequest, fetchFriends),
     takeEvery(addFriendRequest, addFriend),
+    takeEvery(deleteFriendRequest, deleteFriend),
     takeEvery(logoutRequest, logoutUser),
 ];
 

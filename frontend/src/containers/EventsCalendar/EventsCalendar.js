@@ -43,7 +43,7 @@ const EventsCalendar = () => {
             <Grid container spacing={1} item justifyContent="space-between" >
                 <Box>
                     <Button component={Link} to="/events/new" variant="contained" sx={{marginRight: '7px'}}>Add Event</Button>
-                    <Button variant="contained" sx={{marginRight: '7px'}}>View friends</Button>
+                    <Button component={Link} to="/friends" variant="contained" sx={{marginRight: '7px'}}>View friends</Button>
                 </Box>
                     <form style={{display: "inline-block"}} onSubmit={searchFriendSubmit}>
                         <TextField

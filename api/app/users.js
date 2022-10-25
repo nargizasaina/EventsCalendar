@@ -5,6 +5,16 @@ const User = require('../models/User');
 const config = require('../config');
 const {nanoid} = require("nanoid");
 const auth = require("../middleware/auth");
+const mongoose = require("mongoose");
+
+router.get('/friends', auth, async (req, res) => {
+    try{
+        const user = await req.user.populate('friends', 'email displayName');
+        res.send(user.friends);
+    } catch {
+        res.sendStatus(500);
+    }
+});
 
 router.post('/', async (req, res) => {
     const {email, password, displayName} = req.body;
@@ -93,6 +103,24 @@ router.post('/friends/new', auth, async(req, res) => {
         await req.user.save({validateBeforeSave: false});
         console.log(req.user.friends);
         return res.send(req.user);
+    } catch (e) {
+        res.sendStatus(500);
+    }
+});
+
+router.delete('/friends/:id', auth, async (req, res) => {
+    try{
+        const id = mongoose.mongo.ObjectId(req.params.id);
+
+        const friendsArray = req.user.friends;
+        if (!friendsArray.includes(id)) {
+            return res.status(404).send({error: 'The user is not found!'});
+        }
+
+        const index = friendsArray.indexOf(id);
+        friendsArray.splice(index, 1);
+        await req.user.save({validateBeforeSave: false});
+        res.send(req.user);
     } catch (e) {
         res.sendStatus(500);
     }

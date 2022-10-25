@@ -47,6 +47,19 @@ const usersSlice = createSlice({
             state.loginError = null;
         },
 
+        fetchFriendsRequest(state) {
+            state.loading = true;
+            state.error = null;
+        },
+        fetchFriendsSuccess(state, {payload: friends}) {
+            state.loading = false;
+            state.user.friends = friends;
+        },
+        fetchFriendsFailure(state, action) {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
         addFriendRequest(state) {
             state.loading = true;
             state.error = null;
@@ -55,6 +68,18 @@ const usersSlice = createSlice({
             state.loading = false;
         },
         addFriendFailure(state, action) {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        deleteFriendRequest(state) {
+            state.loading = true;
+            state.error = null;
+        },
+        deleteFriendSuccess(state) {
+            state.loading = false;
+        },
+        deleteFriendFailure(state, action) {
             state.loading = false;
             state.error = action.payload;
         },

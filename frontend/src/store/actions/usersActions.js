@@ -8,8 +8,14 @@ export const {
     loginSuccess,
     loginFailure,
     facebookLoginRequest,
+    fetchFriendsRequest,
+    fetchFriendsSuccess,
+    fetchFriendsFailure,
     addFriendRequest,
     addFriendSuccess,
     addFriendFailure,
+    deleteFriendRequest,
+    deleteFriendSuccess,
+    deleteFriendFailure,
     logoutRequest
 } = usersSlice.actions;
