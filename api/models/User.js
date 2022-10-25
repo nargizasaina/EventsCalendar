@@ -32,8 +32,9 @@ const UserSchema = new Schema({
         required: true
     },
     friends: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     }]
 });
 

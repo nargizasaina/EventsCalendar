@@ -1,7 +1,7 @@
 import React from 'react';
 import {Box, Button, Card, CardHeader, Typography} from "@mui/material";
 
-const MyEvent = ({id, title, duration, datetime, onClick}) => {
+const MyEvent = ({id, title, duration, date, onClick}) => {
     return (
         <Card sx={{display: "flex", justifyContent: "space-between", maxWidth: '600px', margin: '7px auto'}}>
             <Box>
@@ -10,13 +10,7 @@ const MyEvent = ({id, title, duration, datetime, onClick}) => {
                     <b>Duration:</b> {duration} hours
                 </Typography>
                 <Typography>
-                    <b>Datetime:</b>  {new Date(datetime).toLocaleTimeString([], {
-                    year: 'numeric',
-                    month: 'numeric',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                })}
+                    <b>Datetime:</b> {date}
             </Typography>
             </Box>
             <Button color="error" onClick={() => onClick(id)}>X</Button>

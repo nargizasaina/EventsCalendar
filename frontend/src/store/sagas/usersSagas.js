@@ -1,6 +1,8 @@
 import axiosApi from "../../axiosApi";
 import {put, takeEvery} from "redux-saga/effects";
 import {
+    addFriendFailure, addFriendRequest,
+    addFriendSuccess,
     facebookLoginRequest,
     loginFailure,
     loginRequest, loginSuccess,
@@ -15,25 +17,20 @@ import {historyPush} from "../actions/historyActions";
 export function* registerUserSaga({payload: userData}) {
     try{
         const response = yield axiosApi.post('/users', userData);
-        console.log(response);
         yield put(registerSuccess(response.data));
         yield put(addNotification('Register Successful', 'success'));
         yield put(historyPush('/'));
     } catch (e) {
-        console.log(e);
-        yield put(registerFailure(e));
+        yield put(registerFailure(e.response.data));
     }
 }
 
 export function* loginUserSaga({payload: userData}) {
     try{
         const response = yield axiosApi.post('/users/sessions', userData);
-        console.log('1');
         yield put(loginSuccess(response.data));
-        console.log('2');
         yield put(addNotification('Login Successful', 'success'));
         yield put(historyPush('/'));
-        console.log('3');
     } catch (e) {
         yield put(loginFailure(e.response.data));
     }
@@ -50,6 +47,16 @@ export function* facebookLoginUserSaga({payload: userData}) {
     }
 }
 
+export function* addFriend({payload: email}) {
+    try{
+        yield axiosApi.post('/users/friends/new', {email});
+        yield put(addFriendSuccess());
+        yield put(addNotification('Friend is invited successfully!', 'success'));
+    } catch (e) {
+        yield put(addFriendFailure(e.response.data));
+    }
+}
+
 export function* logoutUser(getState) {
     try{
         const token = getState().users.user.token;
@@ -63,8 +70,9 @@ export function* logoutUser(getState) {
 const userSagas = [
     takeEvery(registerRequest, registerUserSaga),
     takeEvery(loginRequest, loginUserSaga),
-    // takeEvery(facebookLoginRequest, facebookLoginUserSaga),
-    // takeEvery(logoutRequest, logoutUser)
+    takeEvery(facebookLoginRequest, facebookLoginUserSaga),
+    takeEvery(addFriendRequest, addFriend),
+    takeEvery(logoutRequest, logoutUser),
 ];
 
 export default userSagas;

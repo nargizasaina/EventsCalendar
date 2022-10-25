@@ -6,16 +6,17 @@ const EventSchema = new Schema({
         required: true,
         type: String
     },
-    datetime: {
-        required: true,
-        type: Date
-    },
-    duration: {
+    date: {
         required: true,
         type: String
     },
+    duration: {
+        required: true,
+        type: Number,
+        min: 0
+    },
     owner: {
-        type:Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
     }

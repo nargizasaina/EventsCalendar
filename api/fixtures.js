@@ -42,27 +42,27 @@ const run = async () => {
 
     await Event.create({
         title: 'Halloween party',
-        datetime: new Date().toISOString(),
+        date: new Date().toISOString(),
         duration: 4,
         owner: smn._id
     }, {
         title: 'Do Homework',
-        datetime: new Date().toISOString(),
+        date: new Date().toISOString(),
         duration: 5,
         owner: me._id
     }, {
         title: 'Go to gym',
-        datetime: new Date().toISOString(),
+        date: new Date().toISOString(),
         duration: 1,
         owner: me._id
     }, {
         title: 'Cook smth delicious',
-        datetime: new Date().toISOString(),
+        date: new Date().toISOString(),
         duration: 2,
         owner: user1._id
     }, {
         title: 'Watch TV',
-        datetime: new Date().toISOString(),
+        date: new Date().toISOString(),
         duration: 1,
         owner: user2._id
     });

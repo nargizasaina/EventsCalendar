@@ -9,7 +9,9 @@ const eventsSlice = createSlice({
         fetchLoading: false,
         fetchError: null,
         postLoading: false,
-        postError: null
+        postError: null,
+        deleteLoading: false,
+        deleteError: null
     },
     reducers: {
         fetchMyEventsRequest(state) {
@@ -23,6 +25,30 @@ const eventsSlice = createSlice({
         fetchMyEventsFailure(state, action) {
             state.fetchLoading = false;
             state.fetchError = action.payload;
+        },
+
+        createEventRequest(state){
+            state.postLoading = true;
+            state.postError = null;
+        },
+        createEventSuccess(state) {
+            state.postLoading = false;
+        },
+        createEventFailure(state, action){
+            state.postLoading = false;
+            state.postError = action.payload;
+        },
+
+        deleteEventRequest(state){
+            state.deleteLoading = true;
+            state.deleteError = null;
+        },
+        deleteEventSuccess(state){
+            state.deleteLoading = false;
+        },
+        deleteEventFailure(state, action){
+            state.deleteLoading = false;
+            state.deleteError = action.payload;
         }
     }
 });

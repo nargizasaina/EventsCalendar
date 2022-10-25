@@ -3,6 +3,8 @@ const axios = require("axios");
 const router = express.Router();
 const User = require('../models/User');
 const config = require('../config');
+const {nanoid} = require("nanoid");
+const auth = require("../middleware/auth");
 
 router.post('/', async (req, res) => {
     const {email, password, displayName} = req.body;
@@ -61,6 +63,7 @@ router.post('/facebookLogin', async (req, res) => {
                 password: nanoid(),
                 facebookId: req.body.id,
                 displayName: req.body.name,
+                friends: []
             });
         }
 
@@ -70,6 +73,28 @@ router.post('/facebookLogin', async (req, res) => {
         return res.send(user);
     } catch (e) {
         return res.status(401).send({message: 'Facebook token incorrect!'});
+    }
+});
+
+router.post('/friends/new', auth, async(req, res) => {
+    try{
+        const email = req.body.email;
+        const friend = await User.findOne({email});
+
+        if (!friend) {
+            return res.status(404).send({error: 'The user is not found!'});
+        }
+
+        if (req.user.friends.includes(friend._id)) {
+            return res.status(400).send({error: 'The user is already invited'});
+        }
+
+        req.user.friends.push(friend._id);
+        await req.user.save({validateBeforeSave: false});
+        console.log(req.user.friends);
+        return res.send(req.user);
+    } catch (e) {
+        res.sendStatus(500);
     }
 });
 

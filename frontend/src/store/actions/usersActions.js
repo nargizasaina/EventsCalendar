@@ -8,5 +8,8 @@ export const {
     loginSuccess,
     loginFailure,
     facebookLoginRequest,
+    addFriendRequest,
+    addFriendSuccess,
+    addFriendFailure,
     logoutRequest
 } = usersSlice.actions;
